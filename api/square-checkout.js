@@ -29,9 +29,9 @@ export default async function handler(req,res){
       },
       checkout_options:{
         allow_tipping:true,
-        redirect_url:'https://marinade-dhaba.github.io/marinade-ordering/?paid=square&order='+encodeURIComponent(orderId)
+        redirect_url:'https://marinade-dhaba.github.io/marinade-ordering/?square_return=1&marinade_order='+encodeURIComponent(orderId)
       },
-      payment_note:'Marinade '+orderId
+      payment_note:'Marinade Order '+orderId
     };
     const r=await fetch('https://connect.squareup.com/v2/online-checkout/payment-links',{
       method:'POST',
