@@ -1,6 +1,7 @@
 import crypto from 'crypto';
 
 const NOTIFICATION_URL='https://marinade-order-1.vercel.app/api/square-webhook';
+const SHEETS_URL='https://script.google.com/macros/s/AKfycbyhCeAzbcu6ONR6_CKbpWkndPTsx9uwrlzWtgFVTL1CJNk36Pwn-3TPzUbh2U4qsbRz/exec';
 
 function verifySquareSignature(rawBody, signature){
   const key=process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
@@ -35,17 +36,32 @@ export default async function handler(req,res){
     if(!payment) return res.status(200).json({received:true});
     if(payment.status!=='COMPLETED') return res.status(200).json({received:true,status:payment.status});
 
+    const note=String(payment.note||'');
+    const match=note.match(/MAR-\d+/i);
+    const marinadeOrderId=match?.[0]?.toUpperCase();
+    if(!marinadeOrderId){
+      console.error('Completed Square payment missing Marinade Order ID',payment.id,note);
+      return res.status(200).json({received:true,verified:true,sheetUpdated:false});
+    }
+
+    const sheetResponse=await fetch(SHEETS_URL,{
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body:JSON.stringify({action:'markPaid',orderId:marinadeOrderId})
+    });
+    const sheetText=await sheetResponse.text();
     console.log(JSON.stringify({
       event:'MARINADE_SQUARE_PAYMENT_CONFIRMED',
       paymentId:payment.id,
-      orderId:payment.order_id,
-      note:payment.note,
+      squareOrderId:payment.order_id,
+      marinadeOrderId,
       amount:payment.amount_money?.amount,
       currency:payment.amount_money?.currency,
-      status:payment.status
+      status:payment.status,
+      sheetResponse:sheetText
     }));
 
-    return res.status(200).json({received:true,verified:true});
+    return res.status(200).json({received:true,verified:true,sheetUpdated:true});
   }catch(e){
     console.error('Square webhook error',e);
     return res.status(400).json({error:'Invalid webhook payload'});
