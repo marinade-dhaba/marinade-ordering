@@ -24,6 +24,7 @@ export default async function handler(req,res){
       idempotency_key:orderId+'-'+Date.now(),
       order:{
         location_id:'L4SG1MSWP5BBC',
+        reference_id:orderId,
         line_items,
         taxes:[{name:'Seattle sales tax',percentage:'10.55',scope:'ORDER'}]
       },
