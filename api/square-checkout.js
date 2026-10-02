@@ -1,6 +1,7 @@
 const MENU=[
 {name:'Combo 1 — Chicken Sheekh Kabab',price:21},
 {name:'Combo 2 — Goat Shami Kabab',price:26},
+{name:'Dal Makhni & Jeera Rice Combo',price:14},
 {name:'Chicken Sheekh Kababs',price:11},
 {name:'Goat Shami Kababs',price:13},
 {name:'Chicken Puffs',price:9},
