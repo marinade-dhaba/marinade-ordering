@@ -1,10 +1,10 @@
 const MENU=[
-{name:'Combo 1 — Chicken Sheekh Kabab',price:20},
-{name:'Combo 2 — Goat Shami Kabab',price:25},
-{name:'Chicken Sheekh Kababs',price:10},
-{name:'Goat Shami Kababs',price:12},
-{name:'Chicken Puffs',price:8},
-{name:'Paneer Puffs',price:8},
+{name:'Combo 1 — Chicken Sheekh Kabab',price:21},
+{name:'Combo 2 — Goat Shami Kabab',price:26},
+{name:'Chicken Sheekh Kababs',price:11},
+{name:'Goat Shami Kababs',price:13},
+{name:'Chicken Puffs',price:9},
+{name:'Paneer Puffs',price:9},
 {name:"Nolen Gur'er Panna Cotta",price:3},
 {name:'Kheer Kodombo',price:3}
 ];
